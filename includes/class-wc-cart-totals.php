@@ -437,6 +437,10 @@ final class WC_Cart_Totals {
 
 			// Now we have a new item price (excluding TAX).
 			$item->price              = round( $item->price - array_sum( $taxes ) );
+			//calculate the total price based on rounded price for single item (this way the subtotal will add up)
+			if($item->quantity > 1)
+				$item->price = round($item->price/$item->quantity)*$item->quantity;
+			
 			$item->price_includes_tax = false;
 		}
 		return $item;
@@ -465,6 +469,12 @@ final class WC_Cart_Totals {
 
 				// Now we have a new item price.
 				$item->price = $item->price - array_sum( $taxes ) + array_sum( $new_taxes );
+				//calculate the total price based on rounded price for single item (this way the subtotal will add up)
+				if($item->quantity > 1)
+					$item->price = round($item->price/$item->quantity)*$item->quantity;
+
+				  
+
 			}
 		}
 		return $item;
